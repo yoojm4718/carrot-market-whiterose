@@ -10,7 +10,10 @@ const initItem = (sequelize) =>
       content: DataTypes.TEXT,
       location: DataTypes.STRING,
       price: DataTypes.INTEGER,
-      status: DataTypes.ENUM,
+      status: {
+        type: DataTypes.ENUM,
+        values: ["ONSALE", "RESERVED", "SOLDOUT"],
+      },
       refreshedAt: DataTypes.DATE,
     },
     {
