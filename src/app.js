@@ -2,6 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import usersRouter from "./users/routers/users.router";
+import cookieParser from "cookie-parser";
+import session from "express-session";
 
 const app = express();
 
@@ -14,6 +16,14 @@ app.use(
   )
 );
 app.use(express.json());
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "asjldkfals;dfjasd",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.use("/api/users", usersRouter);
 

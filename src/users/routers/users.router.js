@@ -47,7 +47,31 @@ usersRouter.post("/", async (req, res, next) => {
       message: "user successfully created!",
     });
   } catch (err) {
-    console.err(err);
+    console.error(err);
+    return next(err);
+  }
+});
+
+usersRouter.post("/login", async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) throw new Error("email and password must exist");
+
+    const foundUser = await User.findOne({ email });
+    if (!foundUser) throw new Error("user not exist");
+
+    const comparePassword = await bcrypt.compare(password, foundUser.password);
+    if (!comparePassword) throw new Error("invalid password");
+
+    req.session.userId = foundUser.id;
+
+    return res.json({
+      status: "success",
+      message: "user successfully logged in!",
+    });
+  } catch (err) {
+    console.error(err);
     return next(err);
   }
 });
